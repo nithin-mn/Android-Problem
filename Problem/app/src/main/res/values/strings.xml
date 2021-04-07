@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Problem</string>
+    <string name="done">DONE</string>
+    <string name="email_hint">Enter your email address</string>
+</resources>
