@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\AndroidStudioProjects\\AndroidProblem\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sl\\values-sl.xml",
+            "outputFile": "C:\\Users\\Nithin M N\\Desktop\\Android-Problem\\AndroidProblem\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-sl\\values-sl.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Nithin M N\\.gradle\\caches\\transforms-2\\files-2.1\\8e0a164398b7d6dacc7a2fb7142be0c8\\appcompat-1.2.0\\res\\values-sl\\values-sl.xml",

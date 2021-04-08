@@ -1,5 +1,6 @@
 package com.example.android.androidproblem
 
+import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,8 @@ import android.widget.EditText
 import android.widget.ListView
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     val emailId by lazy { findViewById<EditText>(R.id.email_id) }
@@ -16,13 +19,15 @@ class MainActivity : AppCompatActivity() {
     val userString = ArrayList<String>()
     val listOfImageUrl = ArrayList<String>()
     val apiService by lazy { RestApiService() }
-    val sharedPref = getSharedPreferences("myPref", MODE_PRIVATE)
     val gson = Gson()
+    lateinit var sharedPref:SharedPreferences
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        getCache()
+        GlobalScope.launch{
+            getCache()
+        }
         done.setOnClickListener {
             if (emailId.text.isNullOrEmpty()) {
                 Log.d(TAG, "invalid email")
@@ -31,35 +36,30 @@ class MainActivity : AppCompatActivity() {
                 updateCache()
             }
         }
-
     }
 
     private fun getCache() {
-        val userString = sharedPref.getString("user_string", "")
-        val urlString = sharedPref.getString("url_string", "")
+        sharedPref = getSharedPreferences("myPref", MODE_PRIVATE)
+        val userString = sharedPref.getString("user_string", null)
+        val urlString = sharedPref.getString("url_string", null)
         val type = object : TypeToken<ArrayList<String>>() {}.type
         val userJson = gson.fromJson<ArrayList<String>>(userString, type)
         val urlJson = gson.fromJson<ArrayList<String>>(urlString, type)
-        if (userString != "" && urlString != "") {
+        if (userString != null && urlString != null) {
             createListView(userJson, urlJson)
         }
     }
 
     private fun getHttpResponse() {
-        Log.d(TAG, "gethttpresponse")
         val userInfo = UserRequest(emailId.text.toString())
-        Log.d(TAG, "request")
         apiService.addUser(userInfo) {
             if (it?.items != null) {
                 setView(it)
-            } else {
-                Log.d(TAG, "noresponse")
             }
         }
     }
 
     private fun setView(userlist: UserList) {
-        Log.d(TAG, "gotresponse")
         userlist.items.forEach {
             userString.add(it.toString())
             listOfImageUrl.add(it.imageUrl)
@@ -67,11 +67,11 @@ class MainActivity : AppCompatActivity() {
         createListView(userString, listOfImageUrl)
     }
 
-
     private fun updateCache() {
-        Log.d(TAG, "updatecache")
-        sharedPref.edit().putString("user_id", gson.toJson(userString)).apply()
-        sharedPref.edit().putString("image_url", gson.toJson(listOfImageUrl)).apply()
+        GlobalScope.launch {
+            sharedPref.edit().putString("user_string", gson.toJson(userString)).apply()
+            sharedPref.edit().putString("url_string", gson.toJson(listOfImageUrl)).apply()
+        }
     }
 
     private fun createListView(userString: ArrayList<String>, urlList: ArrayList<String>) {

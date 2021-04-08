@@ -1,7 +1,7 @@
 {
     "logs": [
         {
-            "outputFile": "E:\\AndroidStudioProjects\\AndroidProblem\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ldrtl-v17\\values-ldrtl-v17.xml",
+            "outputFile": "C:\\Users\\Nithin M N\\Desktop\\Android-Problem\\AndroidProblem\\app\\build\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-ldrtl-v17\\values-ldrtl-v17.xml",
             "map": [
                 {
                     "source": "C:\\Users\\Nithin M N\\.gradle\\caches\\transforms-2\\files-2.1\\dca81d2e59f2ef6e5c4e3386a5e41173\\material-1.3.0\\res\\values-ldrtl-v17\\values-ldrtl-v17.xml",

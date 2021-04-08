@@ -17,7 +17,6 @@ class RestApiService {
                 }
                 override fun onResponse(call: Call<UserList>, response: Response<UserList>) {
                     val addedUser = response.body()
-                    Log.d("RestApiService", addedUser.toString())
                     onResult(addedUser)
                 }
             }
