@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
+import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.GlobalScope
@@ -27,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch { getCache() }
         done.setOnClickListener {
             if (emailId.text.isNullOrEmpty()) {
-                Log.d(TAG, "invalid email")
+                Toast.makeText(this,"Enter valid email id",Toast.LENGTH_SHORT).show()
             } else {
                 getHttpResponse()
             }
