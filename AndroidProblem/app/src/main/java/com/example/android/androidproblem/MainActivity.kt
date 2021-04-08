@@ -21,6 +21,7 @@ class MainActivity : AppCompatActivity() {
     private val apiService by lazy { RestApiService() }
     private val gson = Gson()
     private lateinit var sharedPref: SharedPreferences
+    private val type by lazy{ object : TypeToken<ArrayList<User>>() {}.type }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch { getCache() }
         done.setOnClickListener {
             if (emailId.text.isNullOrEmpty()) {
-                Toast.makeText(this,"Enter valid email id",Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Enter valid email id", Toast.LENGTH_SHORT).show()
             } else {
                 getHttpResponse()
             }
@@ -38,21 +39,22 @@ class MainActivity : AppCompatActivity() {
     private fun getCache() {
         sharedPref = getSharedPreferences("myPref", MODE_PRIVATE)
         val userString = sharedPref.getString("user_string", null)
-        val type = object : TypeToken<ArrayList<User>>() {}.type
-        val userJson = gson.fromJson<ArrayList<User>>(userString, type)
         if (userString != null) {
-            createListView(userJson)
+            createListView(gson.fromJson<ArrayList<User>>(userString, type))
         }
     }
 
     private fun getHttpResponse() {
         val userInfo = UserRequest(emailId.text.toString())
-        apiService.addUser(userInfo) {
-            if (it?.items != null) {
-                Log.d(TAG, "got response")
-                createListView(it.items)
-                sharedPref.edit().putString("user_string", gson.toJson(it.items)).apply()
+        apiService.addUser(userInfo) { userList1 ->
+            userList1?.items.let {
+                if (it != null) {
+                    createListView(it)
+                }
+                    sharedPref.edit().putString("user_string", gson.toJson(it))
+                        .apply()
             }
+
         }
     }
 
@@ -60,5 +62,3 @@ class MainActivity : AppCompatActivity() {
         userList.adapter = CustomAdapter(this, userString)
     }
 }
-
-private const val TAG = "MainActivity"
