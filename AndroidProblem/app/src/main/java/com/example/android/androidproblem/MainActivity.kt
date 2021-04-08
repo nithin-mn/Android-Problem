@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private val apiService by lazy { RestApiService() }
     private val gson = Gson()
     private lateinit var sharedPref: SharedPreferences
-    private val type by lazy{ object : TypeToken<ArrayList<User>>() {}.type }
+    private val type by lazy { object : TypeToken<ArrayList<User>>() {}.type }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +51,8 @@ class MainActivity : AppCompatActivity() {
                 if (it != null) {
                     createListView(it)
                 }
-                    sharedPref.edit().putString("user_string", gson.toJson(it))
-                        .apply()
+                sharedPref.edit().putString("user_string", gson.toJson(it)).apply()
             }
-
         }
     }
 
