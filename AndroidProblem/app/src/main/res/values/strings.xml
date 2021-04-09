@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AndroidProblem</string>
+    <string name="done">DONE</string>
+    <string name="email_hint">Enter your email address</string>
+    <string name="displayPicture">Display Picture</string>
+    <string name="message">Enter valid email address</string>
+
+</resources>

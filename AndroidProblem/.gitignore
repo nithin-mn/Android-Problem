@@ -1,0 +1,15 @@
+*.iml
+.gradle
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+# Gradle files
+.gradle/
+build/
+# IntelliJ
+.idea/
+# Version control
+vcs.xml
