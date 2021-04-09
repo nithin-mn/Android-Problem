@@ -3,7 +3,6 @@ package com.example.android.androidproblem
 import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ListView
@@ -12,7 +11,6 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     private val emailId by lazy { findViewById<EditText>(R.id.email_id) }
@@ -29,7 +27,7 @@ class MainActivity : AppCompatActivity() {
         GlobalScope.launch { getCache() }
         done.setOnClickListener {
             if (emailId.text.isNullOrEmpty()) {
-                Toast.makeText(this, "Enter valid email id", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, R.string.message, Toast.LENGTH_SHORT).show()
             } else {
                 getHttpResponse()
             }
@@ -37,10 +35,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getCache() {
-        sharedPref = getSharedPreferences("myPref", MODE_PRIVATE)
-        val userString = sharedPref.getString("user_string", null)
-        if (userString != null) {
-            createListView(gson.fromJson<ArrayList<User>>(userString, type))
+        sharedPref = getSharedPreferences(name, MODE_PRIVATE)
+        sharedPref.let {
+            val userString = it.getString(key, null)
+            if (userString != null) {
+                createListView(gson.fromJson<ArrayList<User>>(userString, type))
+            }
         }
     }
 
@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 if (it != null) {
                     createListView(it)
                 }
-                sharedPref.edit().putString("user_string", gson.toJson(it)).apply()
+                sharedPref.edit().putString(key, gson.toJson(it)).apply()
             }
         }
     }
@@ -60,3 +60,6 @@ class MainActivity : AppCompatActivity() {
         userList.adapter = CustomAdapter(this, userString)
     }
 }
+
+private const val name = "myPref"
+private const val key = "user_string"
