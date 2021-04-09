@@ -9,8 +9,7 @@ import android.widget.ListView
 import android.widget.Toast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+
 
 class MainActivity : AppCompatActivity() {
     private val emailId by lazy { findViewById<EditText>(R.id.email_id) }
@@ -24,7 +23,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        GlobalScope.launch { getCache() }
+        getCache()
         done.setOnClickListener {
             if (emailId.text.isNullOrEmpty()) {
                 Toast.makeText(this, R.string.message, Toast.LENGTH_SHORT).show()
@@ -36,13 +35,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun getCache() {
         sharedPref = getSharedPreferences(name, MODE_PRIVATE)
-        sharedPref.let {
-            val userString = it.getString(key, null)
-            if (userString != null) {
-                createListView(gson.fromJson<ArrayList<User>>(userString, type))
-            }
+        val userString = sharedPref.getString(key, null)
+        userString?.let {
+            createListView(gson.fromJson<ArrayList<User>>(it, type))
         }
     }
+
 
     private fun getHttpResponse() {
         val userInfo = UserRequest(emailId.text.toString())
@@ -57,7 +55,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createListView(userString: List<User>) {
-        userList.adapter = CustomAdapter(this, userString)
+        userList.adapter = UserListAdapter(this, userString)
     }
 }
 

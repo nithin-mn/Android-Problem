@@ -12,18 +12,18 @@ import coil.ImageLoader
 import coil.load
 import coil.request.ImageRequest
 
-class CustomAdapter(
+class UserListAdapter(
     private val contex: Context,
     private val description: List<User>,
 ) : ArrayAdapter<User>(contex, R.layout.user_item, description) {
-    val imageLoader = ImageLoader(context)
-    val rowView = LayoutInflater.from(contex).inflate(R.layout.user_item, null, true)
-    val userDetail: TextView = rowView.findViewById(R.id.user_detail)
-    val userImage: ImageView = rowView.findViewById(R.id.user_image)
+    private val imageLoader = ImageLoader(context)
 
     override fun getView(position: Int, view: View?, parent: ViewGroup): View {
-
-        userDetail.text = "${description[position].firstName} ${description[position].lastName}\n${description[position].emailId}"
+        val rowView = LayoutInflater.from(contex).inflate(R.layout.user_item, null, true)
+        val userDetail: TextView = rowView.findViewById(R.id.user_detail)
+        val userImage: ImageView = rowView.findViewById(R.id.user_image)
+        userDetail.text =
+            "${description[position].firstName} ${description[position].lastName}\n${description[position].emailId}"
         val request = ImageRequest.Builder(contex)
             .data(description[position].imageUrl)
             .target(
