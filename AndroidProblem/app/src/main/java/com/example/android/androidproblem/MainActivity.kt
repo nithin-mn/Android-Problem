@@ -34,8 +34,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getCache() {
-        sharedPref = getSharedPreferences(name, MODE_PRIVATE)
-        val userString = sharedPref.getString(key, null)
+        sharedPref = getSharedPreferences(NAME, MODE_PRIVATE)
+        val userString = sharedPref.getString(KEY, null)
         userString?.let {
             createListView(gson.fromJson<ArrayList<User>>(it, type))
         }
@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
                 if (it != null) {
                     createListView(it)
                 }
-                sharedPref.edit().putString(key, gson.toJson(it)).apply()
+                sharedPref.edit().putString(KEY, gson.toJson(it)).apply()
             }
         }
     }
@@ -59,5 +59,5 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-private const val name = "myPref"
-private const val key = "user_string"
+private const val NAME = "myPref"
+private const val KEY = "user_string"
